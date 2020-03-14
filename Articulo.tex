@@ -1,0 +1,505 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[fleqn,10pt, a4paper]{SelfArx} % Document font size and equations flushed left
+
+\setlength{\columnsep}{0.55cm} % Distance between the two columns of text
+\setlength{\fboxrule}{0.75pt} % Width of the border around the abstract
+
+\definecolor{color1}{RGB}{1,1,1} % Color of the article title and sections
+\definecolor{color2}{RGB}{205, 133, 63} % Color of the boxes behind the abstract and headings
+\definecolor{Brick}{RGB}{94, 38, 18}
+\usepackage[backref=false, bookmarks=false]{hyperref}
+\hypersetup{ 
+colorlinks=true,       % false: boxed links; true: colored links
+linkcolor=blue,          % color of internal links (change box color with linkbordercolor)
+citecolor=red,        % color of links to bibliography
+filecolor=magenta,      % color of file links
+urlcolor=blue           % color of external links
+pdfauthor=Oscar Cabrero Bertram}
+\usepackage{bookmark}
+\bookmarksetup{
+  open,
+  openlevel=2,
+  numbered,
+}
+\usepackage{utilmat}
+
+
+\newtheorem{enun}{Enunciado}
+\newtheorem{demo}{Demostración}
+\newtheorem{lema}{Lema}
+\newtheorem{defi}{Definición}
+\usepackage{epstopdf}
+\newlength{\tocsep} 
+\setlength\tocsep{1.5pc} % Sets the indentation of the sections in the table of contents
+\setcounter{tocdepth}{3} % Show only three levels in the table of contents section: sections, subsections and subsubsections
+
+
+\usepackage{lipsum} % Required to insert dummy text
+
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE INFORMATION
+%----------------------------------------------------------------------------------------
+
+\JournalInfo{Artículo tal} 
+\Archive{Artículo de investigación} 
+
+\PaperTitle{Sobre la agrupación de elementos discretos. Método basado en fractales} 
+
+\Authors{Oscar Cabrero Bertram\textsuperscript{1}\textsuperscript{$\star$}}
+\affiliation{\textsuperscript{1}\textit{Universidad Politécnica de Madrid, Madrid, España}} 
+
+\affiliation{$\star$\textbf{e-mail}: o.cabrero@alumnos.upm.es}
+
+\Keywords{Fractal, k-Median, geometric median} % Keywords - if you don't want any simply remove all the text between the curly brackets
+\newcommand{\keywordname}{Palabras clave} % Defines the keywords heading name
+\newcommand{\nombreresumen}{Resumen} % Defines the keywords heading name
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+\Resumen{ Muchas son las aplicaciones en ingeniería que requieren de la optimización. Piénsese por ejemplo en el abastecimiento de agua a un conjunto de casas: se buscarán los puntos donde colocar bombas de presión para que haya el menor número de ellas y que se produzca la menor pérdida de carga en las tuberías que unen una bomba con las casas a las que abastece. Este artículo pretende mostrar una forma de optimizar la manera de agrupar un número finito de puntos con pesos en el plano tal que cada grupo contenga elementos dentro de una circunferencia de radio determinado, haya el menor número posible de grupos, y además que el centro de cada circunferencia se sitúe en el punto $x_\star$ que minimiza la suma de las distancias ponderadas a los elementos de contiene. El método se basa en fractales, utilizando dos: uno para crear grupos disjuntos y otro para encontrar el $x_\star$ de cada grupo.}
+\Abstract{\em Optimization is in most of engineering problems. For example, think of a set of houses you want to supply water: you will try to find the points where to locate some water pumps so as to minimize the number of them and to produce the least possible preassure drop in the pipes that connect a pump and all the houses it supplies. The aim of this paper is to show a way to optimize the clustering of a set of elements in the plane so as every group contains elements in a radii known circumference, there is the least possible number of groups and also the center of every circumference, $x_\star$, is such that minimizes the sum of the weighted distances to every element contained in that circumference. The method is based in two fractals: the first one to make the clusters and the second one to find the $x_\star$ of every group.}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\flushbottom % Makes all text pages the same height
+
+\maketitle % Print the title and abstract box 
+\renewcommand{\contentsname}{Contenido}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabla}
+\tableofcontents % Print the contents section
+
+\thispagestyle{empty} % Removes page numbering from the first page
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					INTRODUCCIÓN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Introducción} % The \section*{} command stops section numbering
+\addcontentsline{toc}{section}{\hspace*{-\tocsep}Introducción} % Adds this section to the table of contents with negative horizontal space equal to the indent for the numbered sections
+
+
+
+Existen numerosos problemas que tienen en común la necesidad de realizar agrupaciones de un tamaño determinado. Desde la localización de los puntos de acceso de las redes de área local inalámbricas (los {\em APs} de las {\sc WLAN}), hasta la manera de amontonar las hojas de un descampado para luego recogerlas, pasando por el ejemplo arriba expuesto en el resumen. Todos ellos tienen en común la necesidad de encontrar la optimización de la posición y el número de grupos que se hacen con los elementos. Además se pide que dichos grupos deben contener los elementos dentro de una circunferencia de radio determinado.
+
+En este artículo se expone un método mediante el cual se alcanza dicho objetivo, basándose en la intuición y utilizando los fractales como medio matemático para desarrollar el procedimiento. 
+
+La estructura del método es sencilla: definido el radio ($R$) de las circunferencias que restringen los elementos que pueden agruparse, se buscarán los grupos que contengan un número mayor de elementos propios, de forma que se produzca el menor solapamiento posible entre ellos. Una vez se hayan definido los grupos y los elementos que éstos contienen, se buscará para cada uno de ellos el punto $x_\star$ que minimiza la suma de las distancias ponderadas\footnote{Ponderadas porque se considera que no todos los puntos tienen el mismo peso. Puede que una casa sea más grande que otra, o que una hoja sea más pesada que otra.} de cada punto a este $x_\star$. Esta búsqueda estará restringida en una zona concreta, ya que, pese a existir la solución $x_\star$, la circunferencia de radio $R$ y de centro $x_\star$ puede que no contenga a algunos de los elementos que la circunferencia de partida sí contenía.
+
+\section*{Notación empleada}
+\addcontentsline{toc}{section}{\hspace*{-\tocsep}Notación empleada}
+En lo que sigue se utilizará una notación que, para facilitar al lector el seguimiento del artículo, se expone a continuación.
+
+\begin{table}[hbtp]
+\caption{Tabla de notación empleada}
+\centering
+\begin{tabular}{ccl}
+\toprule
+{\bf Símbolo} & {\bf Rango} & {\bf Descripción} \\
+\midrule
+$\mathcal{X}$ &  & Conjunto de puntos aleatorios \\
+$\mathcal{R}$ &  & Región de $\R^2$ que ocupan\\
+                      &  & todos los círculos\\
+$\mathcal{C}$ &  & Conjunto de todos los círculos \\
+                      &  & que ocupan $\mathcal{R}$\\
+$\mathcal{P}^\iota$ &  & Conjunto de todos los $p_f^\iota$ \\
+                      &  & obtenidos en $\iota$ iteraciones\\
+$x_i$ & $i=1\ldots I$ & Cada punto aleatorio \\
+$\omega_i$ & $i=1\ldots I$ & Peso de cada punto aleatorio \\
+$c_k$ & $k=1\ldots K$ & Cada centro de círculo de $\mathcal{C}$ \\
+$C_k$ & $k=1\ldots K$ & Cada círculo de $\mathcal{C}$ \\
+$\rho$ &  & Radio de los círculos de $\mathcal{C}$ \\
+$x_j$ & $j=a_1\ldots a_J$ & Punto aleatorio dentro de $C_k$ \\
+$F_C$ &  & Atractor del fractal  (\ref{FC})\\
+$\iota$ &  & Profundidad de $F_C$ \\
+$p_f^\iota$ & $f=1\ldots 2^{2\iota}$  & Puntos candidatos a $c_k$ \\
+                      &  & para $\iota$ iteracinoes\\
+$x^\star$ &  & Mediana geométrica \\
+\bottomrule
+\end{tabular}
+\label{tab:label}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					EL MÉTODO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{El método}
+
+En primer lugar, situemos el problema de forma general: 
+
+\begin{enun}\label{Enun1}
+
+Sea una colección finita $\mathcal{X}$ de puntos $x_i$, con $i=1, 2, \ldots I$. Se pide encontrar una colección $\mathcal{C}$ de círculos de centro $c_k$, con $k=1, 2, \ldots K$ y de radio $\rho$ tales que la colección de puntos $x_i, \forall i$ se encuentre contenida en la región ($\mathcal{R}\subset\R^2$) del espacio que ocupan los círculos, $\D{\mathcal{R}=\bigcup_{k=1}^{K}C_k}$, siendo $C_k$ la superficie circular de centro $c_k$ y  radio $\rho$. Además debe cumplirse que el cardinal de $\mathcal{C}$, $\card(\mathcal{C})=K$,  es mínimo y que se optimiza la siguiente expresión:
+\begin{equation}\label{MG}
+c_k=\arg\min{\sum_{j=1}^{J}\omega_j\cdot \|c_k-x_j\|}\quad \forall k\in\{1, 2, \ldots, K\}
+\end{equation}
+siendo $\omega_j$ el peso del punto $x_j$, y $J$ en número de puntos que cumplen:
+$$\|c_k-x_j\|\leq\rho$$
+para un $C_k$ determinado. $\blacksquare$
+\end{enun}
+
+Como se ha expuesto en la introducción, se distinguen dos pasos principales, en los que se anidan pasos internos que conforman el procedimiento total. El primer paso consite en la agrupación, y el segundo en la reubicación.
+%%%%%%%%%%%%%%%%%%%--------------------------------------------------------
+\subsection{Agrupación de los puntos}
+
+Expuesto el problema, hay que encontrar en primer lugar la forma de reunir los puntos en el menor número de grupos posible para, después, tratar con los puntos de cada grupo. Para ello, cabría pensar en alguna figura geométrica que los encerrara y, de esta forma, acotar la superficie del problema. Tras ello, una forma de buscar cuáles de los infinitos puntos que existen el la nueva región acotada podrían ser candidatos a centros de los círculos descritos en \ref{Enun1} es discretizando esta superficie, considerando, en principio, que contiene un número finito de pares $\{x, y\}:x, y\in\R$ entre los cuales hay que elegir los candidatos a centros. Por último, en lo que se refiere a la agrupación de los puntos, hay que definir el mecanismo de selección de forma que se cumpla que el número de círculos es mínimo, $\D{K=\min\bigcup_{l=1}^{L}\card(\mathcal{C}_l)}$, con $L$ el número de posibles conjuntos de círculos de centro los puntos $p_f$ resultantes de discretizar la nueva superficie.
+
+Estas etapas dentro del mecanismo de agrupación se describen a continuación.
+
+\subsection{Elección del recinto}
+
+Para justificar la elección del recinto hay que tener en cuenta lo que se va a hacer con él. El recinto que se  ha escogido es el que es por tres motivos:
+\begin{enumerate}[noitemsep] \label{motivos}
+\item Es el polígono más simple.
+\item Se puede utilizar facilmente para descomponer otras superficies.
+\item Es el único polígono que siempre es convexo. 
+\end{enumerate}
+
+La elección es, en efecto, un triángulo. Además, y este es el motivo principal de su elección, existe un punto notable del triángulo que garantiza que la circunferencia de radio la distancia desde este punto a cualquier vértice encierra todo el triángulo. Este punto es el circuncentro, y es la base del fractal que se utilizará para discretizar la región encerrada por el triángulo.
+
+\subsection{Discretización del triángulo. ($F_C$)}\label{FC}
+
+Puesto que la base para elaborar la discretización del triángulo es utlizando su circuncentro, se debe exigir al mismo que sea acutángulo o, a lo sumo, rectángulo, porque éstos son el tipo de triángulos cuyo circuncentro cae dentro de las fronteras de la región que delimitan (o sobre ellas en el caso del rectángulo). El método de discretización es sencillo\footnote{$F_C$ significa fractal de circuncentros, para notar de manera abreviada el método de discretización del triángulo.}:
+
+Se toma el triángulo principal. A continuación, se unen los puntos medios de los lados, y se unen entre sí. De esta forma se obtienen cuatro triángulos semejantes al primero, tres de ellos sin giro, y el central girado $\pi$ rad. Si se calcula el circuncentro del triángulo prinicipal (mediante la intersección de los segmentos que unen un vértice con el punto medio del lado opuesto), a continuación los circuncentros de los triángulos formados en la primera división, y se unen estos al primero, y así sucesivamente, se obtiene un fractal de árbol semejante al de la figura \ref{fig:Figura1}. El fin es encontrar una o varias funciones que, iteradas un número $\iota$ determinado de veces, generen una red de puntos lo suficientemente grande que, además, tienda a cubrir toda la superficie del triángulo de forma homogénea. Esto se consigue obteniendo un sistema de funciones iteradas, {\sc SFI} \cite{SFIF}, con el que obtener el conjunto de puntos $\mathcal{P}^{\iota+1}$ para la iteración $\iota+1$. Los $p_f^{\iota+1}\in\mathcal{P}^{\iota+1}$ se obtienen aplicando el {\sc SFI} a los puntos $p_f^\iota\in\mathcal{P}^{\iota}$.
+
+\begin{figure}[htbp]
+\hspace{-0.4cm}
+\begin{minipage}{0.51\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Figuras/Figura2}
+\caption{Árbol para $\iota=2$}
+\label{fig:Figura1}
+\end{minipage}
+\begin{minipage}{0.51\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Figuras/Figura3}
+\caption{Cometas para $\iota=2$}
+\label{fig:Figura2}
+\end{minipage}
+\end{figure}
+
+La determinación del {\sc SFI} es sencilla, teniendo en cuenta las transformaciones afines de rotación, traslación y homotecia. Para facilitar la comprensión de las transformaciones, las ramas del árbol se han sustituido por las {\em ``cometas''} de la figura \ref{fig:Figura2}. Con la notación de las figuras \ref{fig:SFI1} y \ref{fig:SFI2} y tomando el orden de referencia a las cometas como el de las agujas del reloj empezando desde el punto $A$, dejando la cometa central la última, se obtiene el siguiente sistema de funciones iteradas:
+
+
+\begin{figure}[hbtp]\centering % Using \begin{figure*} makes the figure take up the entire width of the page
+\includegraphics[width=\linewidth, keepaspectratio]{Figuras/SFI1}
+\caption{Semejanza sin rotación (cometas 1, 2 y 3)}
+\label{fig:SFI1}
+\end{figure}
+\begin{figure}[hbtp]\centering % Using \begin{figure*} makes the figure take up the entire width of the page
+\includegraphics[width=\linewidth, keepaspectratio]{Figuras/SFI2}
+\caption{Semajanza con rotación (cometa 4)}
+\label{fig:SFI2}
+\end{figure}
+
+\hspace{-0.65cm}
+\begin{minipage}{\linewidth}
+\begin{eqnarray*}
+f_1:=\label{F1}
+\begin{pmatrix}
+x\\
+y
+\end{pmatrix}=
+\begin{pmatrix}
+\frac{1}{2}& 0\\
+0& \frac{1}{2}
+\end{pmatrix}
+\begin{pmatrix}
+X\\
+Y
+\end{pmatrix}+
+\begin{pmatrix} 
+cc_{ax}-\frac{1}{2}X_1\\
+cc_{ay}-\frac{1}{2}Y_1
+\end{pmatrix}
+&
+\\
+f_2:=\label{F2}
+\begin{pmatrix}
+x\\
+y
+\end{pmatrix}=
+\begin{pmatrix}
+\frac{1}{2}& 0\\
+0& \frac{1}{2}
+\end{pmatrix}
+\begin{pmatrix}
+X\\
+Y
+\end{pmatrix}+
+\begin{pmatrix} 
+cc_{ax}-\frac{1}{2}X_1+\frac{1}{2}(C_x-A_x)\\
+cc_{ay}-\frac{1}{2}Y_1+\frac{1}{2}(C_y-A_y)
+\end{pmatrix}
+\\
+f_3:=\label{F3}
+\begin{pmatrix}
+x\\
+y
+\end{pmatrix}=
+\begin{pmatrix}
+\frac{1}{2}& 0\\
+0& \frac{1}{2}
+\end{pmatrix}
+\begin{pmatrix}
+X\\
+Y
+\end{pmatrix}+
+\begin{pmatrix} 
+cc_{ax}-\frac{1}{2}X_1+\frac{1}{2}(B_x-A_x)\\
+cc_{ay}-\frac{1}{2}Y_1+\frac{1}{2}(B_y-A_y)
+\end{pmatrix}
+\\
+f_4:=\label{F4}
+\begin{pmatrix}
+x\\
+y
+\end{pmatrix}=
+\begin{pmatrix}
+-\frac{1}{2}& 0\\
+0& -\frac{1}{2}
+\end{pmatrix}
+\begin{pmatrix}
+X\\
+Y
+\end{pmatrix}+
+\begin{pmatrix} 
+\frac{CC_{3x}}{2}+cc_{bx}\\
+\frac{CC_{3y}}{2}+cc_{by}
+\end{pmatrix}
+\end{eqnarray*}
+\end{minipage}
+
+Iterando este sistema $\iota$ veces, se obtienen redes de puntos con la apariencia de las figuras \ref{fig:Figura5} y \ref{fig:Figura4}, en las que se representa la red de circuncentros candidatos a centros de círculo en un triángulo equilátero para iteraciones diferentes.
+
+\begin{figure}[ht]
+\hspace{-0.2cm}
+\begin{minipage}{0.51\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Figuras/Figura5}
+\caption{Iteración $\iota=4$}
+\label{fig:Figura5}
+\end{minipage}
+\hspace{-0.2cm}
+\begin{minipage}{0.51\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Figuras/Figura4}
+\caption{Iteración $\iota=5$}
+\label{fig:Figura4}
+\end{minipage}
+\end{figure}
+
+Como se puede apreciar, la red tiende a cubrir toda la superficie del triángulo, por lo que es una buena manera de discretizar la región que éste delimita.
+
+Una vez se ha obtenido el conjunto $\mathcal{P}^\iota$ de puntos de la región, hay que puntualizar una cuestión. Puesto que estos puntos son centro de circunferencias circunscritas a los triángulos de la iteración $\iota$, el radio de éstos debe ser mayor o igual que la distancia de un circuncentro a uno de los tres vértices más cercanos, ya que si éste fuera menor, la unión de los círculos de centro los $p_f^\iota$ no cubriría la región total del triángulo, impidiendo garantizar que los $x_i$ pertenezcan a esta unión. Por lo tanto, el radio $\rho$ está restringido por esta ecuación:
+
+\begin{equation}
+$$\rho\geq \|p_f^\iota-t^\iota_{f}\|=\D{\sqrt{(p^\iota_{f, x}-t^\iota_{f, x})^2+(p^\iota_{f, y}-t^\iota_{f, y})^2}}$$
+\end{equation}
+
+siendo $t_f^\iota$ un vértice del triángulo de iteración $\iota$ y circuncentro $p_f^\iota$.
+
+\paragraph{Cardinal de $\mathcal{P}^\iota$}
+
+Es fácil demostrar, por inducción, que el número de puntos que se generan iteración tras iteración cumple una ley determinada, a saber, 
+
+$$\card(\mathcal{P}^\iota)=2^{2\iota}$$
+
+\begin{demo}
+Para la primera iteración, el número de puntos es cuatro. Teniendo en cuenta que partimos de un punto, éste se ha cuadruplicado. En la segunda iteración, cada uno de los cuatro obtenidos en la primera se cuadruplica, obteniendo así $16$. En la tercera iteración se obtienen cuatro por cada uno de estos dieciséis, por lo que se obtendrán $64$. Esta regla se repite $\iota$ veces y se obtendrán $4^\iota$ puntos, que es justamente $2^{2\iota}$. $\blacksquare$
+\end{demo}
+
+%%%%%%%%%%%%%%%%%%%
+\subsubsection{Depuración de los círculos}
+
+Obtenidos los, ni mucho menos son éstos los que minimizan el número de círculos que generan la región $\mathcal{R}$. Muchofs de ellos contendrán puntos que ya contienen otros círculos y, por tanto, serán prescindibles en el conjunto $\mathcal{C}$. Para conseguir el menor número posible de círculos se buscará que cada uno contenga el mayor número de puntos propios posible, ie. comparta los menos puntos posibles con círculos vecinos. Serán prescindibles, por tanto, aquellos círculos cuyo contenido total\footnote{Total porque si un círculo es el único que contiene un punto, no podrá eliminarse, ya que éste no estaría en $\mathcal{R}$} ya esté completamente repartido en otras circunferencias.
+
+Esta condición se puede expresar de la siguiente manera:
+
+\begin{defi} 
+Sea $\mathcal{X}$ un conjunto de $I$ puntos, $x_i, \forall i\in \N : 1\leq i\leq I$. Sea $\mathcal{C}$ el conjunto de todos los círculos, $\D{\mathcal{C}=\bigcup_{k=1}^K C_k}$, obtenidas por los circuncentros surgidos del fractal. Un círculo $C_\alpha$  que contiene $J$ puntos de $\mathcal{X}$,  $x_{i+j}=\{x_{i+1}, x_{i+2}\ldots \\\ldots x_{i+J}\}$ es prescindible en $\mathcal{C}$ si y solamente si:
+
+$$x_{i+j} \in \bigcup_{k=1}^K C_k \quad\forall j\in\{1, 2, \ldots, J\}, \forall k\neq \alpha $$
+\end{defi}
+
+
+Una vez se ha realizado la depuración, los círculos restantes son los posibles candidatos a centro de los círculos óptimos. La figura \ref{fig:Figura6} muestra como, para 3 iteraciones ($\card{P}=64$) el número de círculos se reduce a $24$ aplicando este criterio de selección.
+
+\begin{figure}[hbtp]\centering % Using \begin{figure*} makes the figure take up the entire width of the page
+\includegraphics[width=0.9\linewidth, keepaspectratio]{Figuras/Figura6}
+\caption{Depuración de los círculos}
+\label{fig:Figura6}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%--------------------------------------------------------
+\subsection{Reubicación de los círculos}
+
+La selección de los grupos ya se ha realizado de acuerdo con el criterio de maximizar el número de elementos propios que contienen y así minimizar el número de ellos. El paso siguiente es reubicar a estos candidatos a centros de círculos óptimos siguiendo nuevamente un criterio de optimización.
+
+Es importante remarcar que el círculo nuevo (desde ahora círculo objetivo) debe seguir conteniendo la totalidad de los puntos que el círculo de partida (desde ahora círculo origen). Esta condición restringe la región sobre la que puede darse el centro óptimo, por lo que deberá ser definida. 
+
+La función objetivo es, como se indica en el enunciado (\ref{MG}), aquella que minimiza la suma total de las distancias desde el centro del círculo a todos y cada uno de los puntos que contiene. Esta función representa la mediana geométrica ponderada de una nube de puntos de pesos distintos, y es el punto que se va a querer buscar. Puesto que no hay una fórmula implícita que la defina, la mediana geométrica debe ser obtenida por métodos numéricos. Lo que a continuación se propone es un nuevo método numérico para la obtención de la mediana geométrica (desde ahora $x^\star$) basado en fractales, en el que se obtendrán las coordenadas de la misma, pero no hay garantía de que caiga dentro de la región restringida. Para encontrar el punto que más se acerca a $x^\star$ debe cumplirse que \ref{MG} sea estrictamente convexa al menos en el círculo origen, de forma que exista un único punto $x^\star$ e impedir así que el método numérico se atasque en un mínimo local.
+
+%%%%%%%%%%%%%%%%%%%
+\subsubsection{Restricción para  la mediana geométrica}
+
+Es evidente que los puntos que más peligro corren de quedarse fuera del círculo origen son los más externos a la nube de puntos que éste contiene (figura \ref{fig:Figura7}). 
+
+\begin{figure}[hbtp]\centering % Using \begin{figure*} makes the figure take up the entire width of the page
+\includegraphics[width=0.95\linewidth, keepaspectratio]{Figuras/Figura7}
+\caption{Envoltura convexa de una nube de puntos}
+\label{fig:Figura7}
+\end{figure}
+
+Estos puntos forman la envoltura convexa de la nube, y son los que restringirán la región sobre la que puede caer $x^\star$. Si el radio del círculo es $\rho$, $x^\star$ tendrá que estar a una distancia menor o igual que $\rho$. Aplicando esta condición a todos los puntos que forman la envoltura convexa se obtendrán círculos con centro estos puntos, cada uno de los cuales representa la zona donde $x^\star$ podría encontrarse si solo existiera el punto que lo genera. Será la intersección de todos estos círculos y el círculo origen la región que restrinja la localización del $x^\star$. Digo del círculo origen porque la envoltura convexa está contenida en él y, como $x^\star$ {\em ad fortiori} cae en ésta, no tiene sentido buscar en zonas externas al círculo origen y, teóricamente, a la envoltura convexa. La figura \ref{fig:Figura8} ilustra la obtención de la región restringida.
+
+\begin{figure}[hbtp]\centering % Using \begin{figure*} makes the figure take up the entire width of the page
+\includegraphics[width=\linewidth, keepaspectratio]{Figuras/Figura8}
+\caption{Obtención de la región restringida mediante la intersección de los círculos de la envoltura convexa y el círculo orígen.}
+\label{fig:Figura8}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%
+\subsubsection{Fractal de mediana geo\-métrica ({\sc FMG})}
+
+Igual que los fuegos artificiales producen explosiones consecutivas y se crean estructuras semejantes en los distintos puntos de explosión, el método que se propone para estimar la mediana geométrica se basa en repeticiones a menor escala de una estructura. Consideremos un círculo $C\subset \R^2$ de radio $\rho$ que contiene $N$ puntos, $\vec{x_1},\vec{ x_2}, \ldots, \vec{x_N}$, $\vec{x_i}\in C$. Tomemos una semilla $\vec{x_s}^1\in C$ con la que comenzar el algoritmo. Tomaremos ahora alrededor de ella $n$ puntos a una distancia $\rho/2$ de $\vec{x_s}$  (ver anexos \ref{anexo:poligono} y \ref{anexo:razon} para su justificación) sobre los cuales evaluaremos la función:
+\begin{equation}\label{eq:funcion}
+f(x, y)=\sum_{i=1}^{N}\omega_i\cdot \sqrt{(x-x_{i, x})^2+(y-x_{i, y})^2}
+\end{equation}
+
+Elegiremos a continuación el punto de $\{\vec{x_s}, \vec{x_1}, \vec{x_2}, \ldots, \vec{x_n}\}$ para el cual $f$ es mínima, y lo utilizaremos como nueva semilla, $\vec{x_s}^2$. En la siguiente iteración tomaremos $n$ puntos pero esta vez a una distancia $\rho/2^2$, y aplicaremos el mismo procedimiento $t$ veces, disminuyendo la distancia como $\rho/2^t$. Las semillas se irán acercando cada vez más a la mediana geométrica, que es el punto que minimiza $f$.
+
+
+
+\begin{figure}[hbtp]\centering
+\includegraphics[width=0.95\linewidth, keepaspectratio]{Figuras/Figura9}
+\caption{$\D{f(x, y)=\sum_{i=1}^{N}\omega_i\cdot \sqrt{(x-x_{i, x})^2+(y-x_{i, y})^2}}$. Los pesos $\omega_i$ son representados por colores}
+\label{fig:Figura9}
+\end{figure}
+
+El algoritmo converge a la mediana geométrica, $\vec{x}^\star$.
+
+\begin{demo}
+
+Sea $f$ la función que da la suma de las distancias desde un $\vec{x}\in\R^n$ hasta el resto de puntos de \hspace{0.5cm}$\mathcal{X}\subset\R^n$. Por \cite{FLETCHER} sabemos que $f$ es estrictamente convexa y que, por tanto, sólo tiene un mínimo.
+
+\begin{defi}
+Se define la altura $\vec{h}$ como el vector 
+
+$$\vec{h}=(f(x_1), f(x_2), \ldots, f(x_n))$$
+
+con $x_1, x_2, \ldots, x_n$ definidos alrededor de una semilla. $\square$
+
+\end{defi}
+
+Dada una semilla, $x_s$, tomaremos $n$ puntos alrededor de ésta, con los que se obtendrá $\vec{h}$.
+
+Sea $f_{min}=\min\{f(x_1, f(x_2), \ldots, f(x_n))\}=\min\{\vec{h}\}$. To\-maremos como semilla en la siguiente iteración $x_s=f_{min}$.
+
+Por construcción, $f_{min}^t=f(x^\star)$ cuando $t\to\infty$
+$\blacksquare$
+\end{demo}
+
+Este método numérico da como resultado el la mediana geométrica que cae en el círculo qe contiene todos los puntos. Es más, la región sobre la que cae es el recinto convexo de la Figura \ref{fig:Figura7}. Ahora el problema reside en determinar el óptimo de \ref{eq:funcion} sobre el dominio definido sobre la región restringida. Una vez se haya obtenido este óptimo, se habrán agrupado los puntos de acuerdo con el planteamiento del problema.
+
+
+%%%%%%%%%%%%%%%%%%%--------------------------------------------------------
+
+
+\subsubsection{Localización del mínimo local en un punto del recinto restringido}
+
+
+Una vez hemos localizado una aproximación del mínimo global de la funcion \ref{eq:funcion} que describe la mediana geométrica, tenemos que encontrar el mínimo local dentro de nuestro recinto restringido, pues es aquí donde puede localizarse el nuevo centro de la circunferencia para no dejar ninguna de las hojas fuera de su alcance.
+
+Tal y como se muestra en la figura \ref{fig:Figura8}, el recinto restringido se construye a partir de la intersección de circunferencias de radio $\rho$  (como el del círculo contenedor de las hojas) y centros los puntos que constituyen la envoltura convexa de las hojas, pues así se restringe la ubicación del centro del círculo óptimo. El problema es que puede que el mínimo global que hemos encontrado mediante el {\sc FMG} puede caer  fuera del recinto restringido. 
+
+Nos encontramos pues con un recinto estrictamente convexo (el restringido) y un punto obtenido a partir del {\sc FMG}. Además, podemos considerar las  isolíneas de\ref{eq:funcion} en el eje Z que, puesto que la función es estrictamente convexa, nos daran curvas para las cuales \ref{eq:funcion} toma el mismo valor. Haciendo crecer el plano de corte con \ref{eq:funcion} desde el punto $\vec{x}^\star$, obtendremos curvas que, en el momento en que éstas sean tangentes a uno o varios puntos de nuestro recinto restringido, nos dará el o los puntos que minimizan \ref{eq:funcion} para el recinto restringido.
+
+Esto no es trivial si tenemos en cuenta que el hecho de que la función $f(x, y)$ sea estrictamente convexa no implica que sus isolíneas sí lo sean.
+
+Las isolíneas tendrán la forma
+
+\begin{equation}\label{eq:isolinea}
+k=\sum_{i=1}^{N}\omega_i\cdot \sqrt{(x-x_{i, x})^2+(y-x_{i, y})^2}
+\end{equation}
+
+y, por simulación, podemos comprobar que en todos los casos simulados, estas isolíneas son, aparentemente,  convexas, como se puede ver en las figuras \ref{fig:isolineas_1} y \ref{fig:isolineas_2}
+
+{\color{red} FIGURAS}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					RESULTADOS Y DISCUSIÓN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Resultados y discusión}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					ANEXOS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Anexos} % The \section*{} command stops section numbering
+\subsection{Anexos al {\sc FMG}}
+\subsubsection{Polígono de iteración}\label{anexo:poligono}
+
+
+
+Al tomar un polígono regular en lugar de uno no regular garantizamos la probabilidad de convergencia más rápida, pues damos la misma oportunidad a todos los $n$ puntos de cada iteración de ser candidatos a semilla de la siguiente.
+
+\begin{lema}
+El tomar $n$ puntos como vértices de un polígono regular de $n$ lados nos asegura el reparto equitativo de probabilidad sobre cada uno de los $\vec{x_i}$, tomados alrededor de una semilla $\vec{x_s}^t$, de ser el nuevo $\vec{x_s}^{t+1}$ debido a su cercanía al óptimo global (toma menor valor la función \ref{eq:funcion} evaluada sobre este punto que sobre los otros $\vec{x_i}$, $i\in\{1, \ldots, n\}$, por lo que está más cerca del mínimo global al ser \ref{eq:funcion} estrictamente convexa).
+\end{lema}
+
+La consideración de los $n$ puntos equidistantes alrededor de la semilla para la realización del algoritmo se basa en que, dado un polígono regular de $n$ lados, tendremos más probabilidades de acercarnos más a un punto a través de uno de los lados del polígono cuanto mayor sea el número de vértices del mismo (desde el centro de éste, que es a partir del cual se construye, \emph{i.e.} la semilla). Por ello, haremos $n$ tan grande como sea posible para acelerar la convergencia del algoritmo al óptimo de \ref{eq:funcion}.
+
+\begin{lema}
+Dada la condición de la función \ref{eq:funcion} de ser estrictamente convexa, y el hecho de que al aumentar el número de lados de un polígono regular más se asemeja a una circunferencia, haremos tender  a un número tan grande como sea posible el número de lados del polígono regular, $n$, para acelerar la convergencia del algoritmo, puesto que más distancia recorreremos en cada iteración hacia el óptimo global de \ref{eq:funcion}.
+\end{lema}
+
+Si tomamos un $\vec{x_s}^t$, y tomamos $n$ puntos alrededor de él para elegir en el que nos colocaremos en la siguiente iteración, digamos $\vec{x_s}^{t+1}$, cuanto más capacidad de elección tengamos, más cerca podremos estar del objetivo, por lo que haremos $n\to\infty$.
+
+\subsubsection{Razón de disminución del polí\-gono}\label{anexo:razon}
+
+El hecho de considerar la razón de disminución del radio del polígono regular en la construcción de los $n$ puntos alrededor de una semilla $\vec{x_s}^t$ como $r = {\frac{1}{2}}$ nos garantiza la convergencia óptima al punto objetivo.
+
+Considérese un segmento $S$ de longitud $L$. Tómense dos puntos $x_1$ y $x^\star$ arbitrarios sobre el segmento $S$. Deseamos llegar, mediante un proceso iterativo desde $x_1$ hasta $x^\star$. Pongámonos en el caso más desfavorable: $x_1$ y $x^\star$ coinciden con los dos extremos del segmento, respectivamente. Podemos observar que si avanzamos una distancia desde $x_1$ hasta $x^\star$ de $L/2$, obtenemos un $x_2$ a distancia $L/2$. Si repetimos este procedimiento dividiendo la distancia que se avanza por dos, ahora tendremos un $x_3$ a una distancia $L/4$ de $x^\star$. Iterando, mediante una razón de disminución de $r= {\frac{1}{2}}$ llegamos a $x^\star $ en $t \to\infty$.
+
+Sin embargo, si consideramos una razón de disminución $|r|={\frac{1}{3}}$ entonces nunca llegaríamos a alcanzar a $x^\star$, tan sólo llegaríamos hasta $L/2$, según una progresión geométrica de razón $|r|=1/3$
+
+Por otro lado, al considerar una razón $|r|\geq 1$ entonces la progresión oscilaría o divergiría, no pudiéndose alcanzar $x^\star$ salvo en el caso particular  de $|r|=1$ y los puntos en los extremos del segmento.
+
+Si tomáramos $1/2<r<|1|$ entonces el algoritmo convergiría, pues al salir del segmento en la segunda iteración, volveríamos a éste en la cuarta simplemente cambiando el sentido de la progresión geométrica. El problema es que éste método oscilaría alrededor del punto $x^\star$ al tiempo que se acerca a éste, por lo que la convergencia es más lenta.
+
+\begin{lema}
+
+La razón de disminución del radio del polígono se toma $r=1/2$ porque si $0\leq |r|<1/2$ el algoritmo no garantiza la convergencia, si $1/2<|r|<1$ el algoritmo no garantiza la convergencia óptima y si $|r|\geq1$ el algoritmo no converge a $x^\star$
+
+\end{lema}
+
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\refname}{Referencias}
+\bibliographystyle{plain}
+\nocite{*}
+\bibliography{Bibliografia/Bibliografia}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

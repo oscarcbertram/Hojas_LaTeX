@@ -1,0 +1,104 @@
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdftex 2012.12.18)  20 FEB 2013 11:34
+entering extended mode
+**C:/Users/Oscar/Documents/MiKTeX/Investigacion/INV_HOJAS/Investigacion_Articul
+o/Bibliografia/Bibliografia.bib
+
+(C:/Users/Oscar/Documents/MiKTeX/Investigacion/INV_HOJAS/Investigacion_Articulo
+/Bibliografia/Bibliografia.bib
+Missing character: There is no á in font cmr10!
+Missing character: There is no ó in font cmr10!
+Missing character: There is no á in font cmr10!
+Missing character: There is no í in font cmr10!
+Missing character: There is no á in font cmr10!
+Missing character: There is no í in font cmr10!
+Missing character: There is no á in font cmr10!
+Missing character: There is no ñ in font cmr10!
+Missing character: There is no í in font cmr10!
+Missing character: There is no é in font cmr10!
+Missing character: There is no á in font cmr10!
+Missing character: There is no ó in font cmr10!
+Missing character: There is no á in font cmr10!
+Missing character: There is no í in font cmr10!
+Missing character: There is no ñ in font cmr10!
+Missing character: There is no í in font cmr10!
+
+Overfull \hbox (14.20427pt too wide) in paragraph at lines 57--61
+[]\tenrm @BookMICH, ti-tle=Genetic Al-go-rithms + Data Struc-tures = Evo-lu-tio
+n Pro-grams., au-thor=Z. Michalewicz.|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm @
+.\tenrm B
+.\tenrm o
+.\kern0.27779
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--61
+
+
+\hbox(0.0+0.0)x469.75499
+.\glue(\rightskip) 0.0
+
+Missing character: There is no ó in font cmr10!
+Missing character: There is no á in font cmr10!
+Missing character: There is no ä in font cmr10!
+
+Overfull \hbox (15.55154pt too wide) in paragraph at lines 105--111
+[]\tenrm @BookRAP, ti-tle=Real Anal-y-sis and Prob-a-bil-ity., au-thor=Ash B.R.
+, pub-lisher=Academic Press, year=1972|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm @
+.\tenrm B
+.\tenrm o
+.\kern0.27779
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 105--111
+
+
+\hbox(0.0+0.0)x469.75499
+.\glue(\rightskip) 0.0
+
+Missing character: There is no á in font cmr10!
+
+Overfull \hbox (17.69038pt too wide) in paragraph at lines 112--118
+[]\tenrm @BookCVA, ti-tle=Convergencia de vari-ables aleato-rias., au-thor=Cruz
+ Mar-tinez Max-imino., pub-lisher=Tesis|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm @
+.\tenrm B
+.\tenrm o
+.\kern0.27779
+.etc.
+
+Missing character: There is no á in font cmr10!
+Missing character: There is no á in font cmr10!
+
+Overfull \hbox (20.37564pt too wide) in paragraph at lines 124--130
+[]\tenrm @BookNNMMC, title=Non-negative Ma-tri-ces and Markov Chains. , au-thor
+=E. Seneta., publisher=Springer-|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm @
+.\tenrm B
+.\tenrm o
+.\kern0.27779
+.etc.
+
+Missing character: There is no á in font cmr10!
+)
+*
+! Emergency stop.
+<*> ...cion_Articulo/Bibliografia/Bibliografia.bib
+                                                  
+End of file on the terminal!
+
+!  ==> Fatal error occurred, no output PDF file produced!

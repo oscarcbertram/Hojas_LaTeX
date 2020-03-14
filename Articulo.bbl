@@ -1,0 +1,120 @@
+\begin{thebibliography}{10}
+
+\bibitem{BANZ}
+W.~Banzhaf.
+\newblock {\em The \lq\lq molecular\rq\rq traveling salesman}.
+
+\bibitem{RAP}
+Ash B.R.
+\newblock {\em Real Analysis and Probability.}
+\newblock Academic Press, 1972.
+
+\bibitem{GOLRIC}
+J.~T.~Richardson D.~E.~Goldberg.
+\newblock {\em Genetic Algorithms and their applications: Procedings of the
+  second International Conference on Genetic Algorithms and their
+  Applications.}
+\newblock 1987.
+
+\bibitem{PDIL}
+Jordi Deulofeu.
+\newblock {\em Prisioneros con dilemas y estrategias dominantes. Teoría de
+  juegos}.
+\newblock RBA.
+
+\bibitem{FLETCHER}
+Suresh y Joshi~Sarang Fletcher, P Thomas y~Venkatasubramanian.
+\newblock {\em Robust statistics on Riemannian manifolds via the geometric
+  median}.
+\newblock 2008.
+
+\bibitem{FOG2}
+D.~B. Fogel.
+\newblock {\em Applying evolutionary programming to selected traveling salesman
+  problems.}
+
+\bibitem{FOG1}
+D.~B. Fogel.
+\newblock {\em An evolutionary approach to the traveling salesman problem}.
+
+\bibitem{MATL}
+A.~Gilat.
+\newblock {\em MATLAB: Una introducción con ejemplos prácticos.}
+
+\bibitem{HOLL}
+D.J. Holland.
+\newblock {\em Adaptation in Natural and Artificial Systems.}
+
+\bibitem{CVVAR}
+V.~Tomeo~Perucha. I.~Uña~Juarez, J. San Martín~Moreno.
+\newblock {\em Cálculo en varias variables.}
+\newblock Garceta.
+
+\bibitem{MMAT}
+V.~Tomeo~Perucha. I.~Uña~Juarez, J. San Martín~Moreno.
+\newblock {\em Métodos matemáticos. Ampliación de matemáticas para ciencias e
+  ingeniería.}
+\newblock Thomson.
+
+\bibitem{FMPTA}
+M.~Iosifescu.
+\newblock {\em Finite Markov Processes and Their Applications.}
+\newblock John Wiley and Sons., 1980.
+
+\bibitem{FMC}
+J.~L.~Snell. J.~G.~Kemeny.
+\newblock {\em Finite Markov Chains.}
+\newblock Van Nostrand Company, Inc. Canadá., 1960.
+
+\bibitem{ESTF}
+M.~Morán M.~Reyes. M.~A.~Guzmán, M. A.~Martín.
+\newblock {\em Estructuras fractales y sus aplicaciones}.
+
+\bibitem{ATRI}
+J.~Ruppert. M.~Bern, S.~Mitchell.
+\newblock {\em Linear-size nonobtuse triangulations of polygons.}
+
+\bibitem{CVA}
+Cruz~Martinez Maximino.
+\newblock {\em Convergencia de variables aleatorias.}
+\newblock Tesis de licenciatura, Facultad de Matemáticas, Universidad
+  Veracruzana., 1999.
+
+\bibitem{MICH}
+Z.~Michalewicz.
+\newblock {\em Genetic Algorithms + Data Structures = Evolution Programs.}
+
+\bibitem{MATH}
+Holly Moore.
+\newblock {\em MATLAB for engineers.}
+\newblock E-source.
+
+\bibitem{APE}
+L.F. Hoyos~Reyes. O.~Hernández-Lerma.
+\newblock {\em Apuntes para un curso introducctorio de procesos estocásticos.}
+
+\bibitem{SFIF}
+E.~A.~Adame Sarmiento.
+\newblock Sistemas de funciones iteradas y los fractales.
+
+\bibitem{NNMMC}
+E.~Seneta.
+\newblock {\em Non-negative Matrices and Markov Chains.}
+\newblock Springer-Verlag., 1981.
+
+\bibitem{AIFMP}
+S.M.~Manjunath. S.R~Adke.
+\newblock {\em An Introduction to Finite Markov Processes.}
+\newblock John Wiley and Sons., 1984.
+
+\bibitem{EATP}
+Bäck Thomas.
+\newblock {\em Evolutionary Algorithms in Theory and Practice.}
+\newblock Oxford University Press, New York, 1966.
+
+\bibitem{PALG}
+A.~De~La Villa.
+\newblock {\em Problemas de álgebra con esquemas teóricos}.
+\newblock CLAG, 1993.
+
+\end{thebibliography}

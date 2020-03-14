@@ -1,0 +1,19 @@
+\select@language {english}
+\contentsline {section}{\hspace *{-\tocsep }Introducci\'on}{1}{Doc-Start}
+\contentsline {section}{\hspace *{-\tocsep }Notaci\'on empleada}{2}{Doc-Start}
+\contentsline {section}{\numberline {1}El m\'etodo}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Agrupaci\'on de los puntos}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Elecci\'on del recinto}{2}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Discretizaci\'on del tri\'angulo. ($F_C$)}{2}{subsection.1.3}
+\contentsline {paragraph}{Cardinal de $\mathcal {P}^\iota $}{3}{paragraph*.6}
+\contentsline {subsubsection}{\numberline {1.3.1}Depuraci\'on de los c\IeC {\'\i }rculos}{3}{subsubsection.1.3.1}
+\contentsline {subsection}{\numberline {1.4}Reubicaci\'on de los c\IeC {\'\i }rculos}{4}{subsection.1.4}
+\contentsline {subsubsection}{\numberline {1.4.1}Restricci\'on para la mediana geom\'etrica}{4}{subsubsection.1.4.1}
+\contentsline {subsubsection}{\numberline {1.4.2}Fractal de mediana geo\discretionary {-}{}{}m\'etrica ({\sc FMG})}{5}{subsubsection.1.4.2}
+\contentsline {subsubsection}{\numberline {1.4.3}Localizaci\'on del m\IeC {\'\i }nimo local en un punto del recinto restringido}{5}{subsubsection.1.4.3}
+\contentsline {section}{\numberline {2}Anexos}{5}{section.2}
+\contentsline {subsection}{\numberline {2.1}Anexos al {\sc FMG}}{5}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Pol\IeC {\'\i }gono de iteraci\'on}{5}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}Raz\'on de disminuci\'on del pol\IeC {\'\i }\discretionary {-}{}{}gono}{6}{subsubsection.2.1.2}
+\contentsline {section}{\hspace *{-\tocsep }Referencias}{6}{lema.3}
+\contentsfinish 
